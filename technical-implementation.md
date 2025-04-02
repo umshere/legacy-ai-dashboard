@@ -189,28 +189,64 @@ Rather than committing to rigid timelines, we suggest an iterative approach:
 4. **Evaluate & Learn**: Assess results together and determine next steps based on value delivered
 5. **Gradual Expansion**: Incrementally add more data sources and AI capabilities as confidence grows
 
-### 5.2 MCP Adapter Implementation
+### 5.2 Enterprise-Grade MCP Adapter Implementation
 
-The Model Context Protocol adapter serves as the unified integration layer between our AI systems and legacy data sources. This standardized approach solves the traditional M×N integration problem, where M different AI models would need N different connectors for each data source. With MCP, we only need M+N connections, significantly reducing complexity and maintenance overhead:
+The Model Context Protocol adapter serves as the unified and secure integration layer between our AI systems and legacy data sources. This standardized approach solves both the traditional M×N integration problem and addresses enterprise security requirements. With MCP, we only need M+N connections and can implement consistent security controls across all integrations:
 
 ```typescript
-// Enhanced MCP Adapter with legacy system integration
-import { MCPServer, ResourceProvider } from "@modelcontextprotocol/server";
+// Enterprise-grade MCP Adapter with security controls
+import {
+  MCPServer,
+  ResourceProvider,
+  SecurityConfig,
+} from "@modelcontextprotocol/server";
+import { OAuth2Provider, OAuthConfig } from "@modelcontextprotocol/oauth";
 import { CloudflareLogParser } from "./parsers/cloudflare";
 import { AwsLambdaParser } from "./parsers/aws";
 import { JavaMicroserviceParser } from "./parsers/java";
+import { SecretsManager } from "./security/secrets";
+import { AuditLogger } from "./security/audit";
 
-class AnomalyDetectionMCPAdapter {
+class EnterpriseAnomalyDetectionMCPAdapter {
   private mcpServer: MCPServer;
   private normalizer: LogNormalizer;
   private complianceManager: ComplianceManager;
+  private secretsManager: SecretsManager;
+  private auditLogger: AuditLogger;
+  private oauth: OAuth2Provider;
 
   constructor() {
+    // Initialize security components
+    this.secretsManager = new SecretsManager({
+      vaultUrl: process.env.VAULT_URL,
+      role: process.env.VAULT_ROLE,
+    });
+
+    this.auditLogger = new AuditLogger({
+      destination: process.env.AUDIT_LOG_DEST,
+      retention: "90d", // Enterprise retention policy
+    });
+
+    // OAuth2 configuration for enterprise SSO
+    this.oauth = new OAuth2Provider({
+      issuer: process.env.OAUTH_ISSUER,
+      clientId: process.env.OAUTH_CLIENT_ID,
+      clientSecret: await this.secretsManager.getSecret("oauth_client_secret"),
+      scopes: ["read:logs", "write:alerts"],
+    });
+
+    // Enhanced MCP server with security
     this.mcpServer = new MCPServer({
       port: 4000,
       security: {
         enableIAMIntegration: true,
         encryptionLevel: "AES256",
+        oauth: this.oauth,
+        auditLogger: this.auditLogger,
+        tlsConfig: {
+          cert: await this.secretsManager.getSecret("tls_cert"),
+          key: await this.secretsManager.getSecret("tls_key"),
+        },
       },
     });
     this.normalizer = new LogNormalizer();
@@ -220,12 +256,26 @@ class AnomalyDetectionMCPAdapter {
     this.setupAnomalyDetection();
   }
 
-  private registerParsers() {
-    // Register parsers with built-in compliance checks
-    this.mcpServer.registerParser("/cloudflare", new CloudflareLogParser(), {
-      preProcess: this.complianceManager.sanitize,
-      validateAccess: this.complianceManager.checkPermissions,
-    });
+  private async registerParsers() {
+    // Register parsers with enhanced security and compliance
+    const cloudflareToken = await this.secretsManager.getSecret(
+      "cloudflare_api_token"
+    );
+    this.mcpServer.registerParser(
+      "/cloudflare",
+      new CloudflareLogParser(cloudflareToken),
+      {
+        preProcess: this.complianceManager.sanitize,
+        validateAccess: async (req) => {
+          await this.auditLogger.logAccess(req);
+          return this.complianceManager.checkPermissions(req);
+        },
+        rateLimit: {
+          maxRequests: 1000,
+          windowMs: 60000, // 1 minute
+        },
+      }
+    );
     this.mcpServer.registerParser("/aws", new AwsLambdaParser());
     this.mcpServer.registerParser("/java", new JavaMicroserviceParser());
   }
