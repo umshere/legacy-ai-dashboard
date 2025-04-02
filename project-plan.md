@@ -1,6 +1,6 @@
 # AI-Driven Modernization POC for Java Microservices & Serverless
 
-**Version**: 2.0  
+**Version**: 2.0
 
 This document outlines the overall project approach, including scope, high-level architecture, and validation strategies for organizations beginning their AI journey. **Note that this is an adaptive learning plan** designed to be flexible as we collaborate and discover what works best for your specific environment.
 
@@ -11,6 +11,7 @@ This document outlines the overall project approach, including scope, high-level
 We aim to enhance an existing Java microservices + serverless environment with AI-driven capabilities—such as automated documentation, anomaly detection, and predictive scaling—by introducing a Model Context Protocol (MCP) adapter and a real-time analytics layer.
 
 ### Key Objectives
+
 1. **Reduce Manual Documentation** – By auto-generating system references for microservices and serverless components.
 2. **Boost Observability** – Unify logs from Cloudflare, AWS, and Java microservices into a single view.
 3. **Improve Incident Response** – Leverage AI analytics to detect anomalies early and provide runbook suggestions.
@@ -19,18 +20,29 @@ We aim to enhance an existing Java microservices + serverless environment with A
 ---
 
 ## 2) Project Scope & Deliverables
+
 - **In-Scope**
+
   - Creating an MCP adapter to gather and normalize logs/metrics.
   - Building an AI/analytics layer for real-time anomaly detection.
   - Providing visualization tools to present insights effectively.
   - Educational workshops to build AI literacy within your organization.
 
 - **Out-of-Scope**
-  - Full refactoring of existing microservices.
-  - Large-scale data warehousing.
-  - Advanced governance or compliance frameworks.
+
+  - Full refactoring of existing microservices
+  - Large-scale data warehousing
+  - Legacy system replacement
+
+- **Enterprise Requirements In-Scope** _(see [Enterprise_Readiness_Assessment.md](./Enterprise_Readiness_Assessment.md))_
+  - OAuth2 authentication and SSO integration
+  - Enterprise secrets management
+  - Compliance auditing and logging
+  - Containerized deployment and scaling
+  - Comprehensive security controls
 
 ### Visual Overview of Scope
+
 ```mermaid
 flowchart LR
     A((Java Microservices)) --> B(MCP Adapter)
@@ -51,6 +63,7 @@ flowchart LR
 ---
 
 ## 3) Collaborative Learning Approach
+
 Instead of rigid timelines, we propose an adaptive learning approach that respects your organization's pace and comfort level with AI technologies.
 
 ### 3.1 Collaborative Journey Phases
@@ -62,7 +75,7 @@ graph TD
     C --> D[Refinement]
     D --> E[Expansion]
     E --> F[Knowledge Transfer]
-    
+
     A1[Understand your environment] -.-> A
     A2[Build AI literacy] -.-> A
     B1[Start with simple integrations] -.-> B
@@ -75,7 +88,7 @@ graph TD
     E2[Introduce advanced techniques] -.-> E
     F1[Document learnings] -.-> F
     F2[Enable self-sufficiency] -.-> F
-    
+
     style A fill:#d0e0ff,stroke:#3366ff,stroke-width:2px
     style B fill:#d5f5e3,stroke:#27ae60,stroke-width:2px
     style C fill:#fdebd0,stroke:#f39c12,stroke-width:2px
@@ -93,15 +106,16 @@ This flexible approach ensures we can adapt to your organization's learning curv
 After evaluating multiple potential use cases for AI integration, we've prioritized them based on feasibility, impact, and alignment with current business needs:
 
 ### 4.1 Potential Use Cases Considered
-| Use Case | Description | Feasibility | Business Impact | Selected |
-|----------|-------------|-------------|----------------|----------|
-| **Anomaly Detection** | Identify unusual patterns in service performance, traffic, or resource usage | High | High | ✅ |
-| **Predictive Scaling** | Anticipate resource needs before traffic spikes occur | Medium | High | Planned for Future |
-| **Automated Documentation** | Generate & maintain technical documentation from code and logs | High | Medium | ✅ |
-| **Incident Classification** | Auto-categorize alerts and suggest response priority | Medium | Medium | Planned for Future |
-| **Root Cause Analysis** | Identify likely sources of failures or performance issues | Low | High | Future Consideration |
-| **Security Threat Detection** | Identify potential security breaches or unusual access patterns | Low | High | Future Consideration |
-| **Cost Optimization** | Suggest resource allocation changes to reduce cloud costs | Medium | Medium | Future Consideration |
+
+| Use Case                      | Description                                                                  | Feasibility | Business Impact | Selected             |
+| ----------------------------- | ---------------------------------------------------------------------------- | ----------- | --------------- | -------------------- |
+| **Anomaly Detection**         | Identify unusual patterns in service performance, traffic, or resource usage | High        | High            | ✅                   |
+| **Predictive Scaling**        | Anticipate resource needs before traffic spikes occur                        | Medium      | High            | Planned for Future   |
+| **Automated Documentation**   | Generate & maintain technical documentation from code and logs               | High        | Medium          | ✅                   |
+| **Incident Classification**   | Auto-categorize alerts and suggest response priority                         | Medium      | Medium          | Planned for Future   |
+| **Root Cause Analysis**       | Identify likely sources of failures or performance issues                    | Low         | High            | Future Consideration |
+| **Security Threat Detection** | Identify potential security breaches or unusual access patterns              | Low         | High            | Future Consideration |
+| **Cost Optimization**         | Suggest resource allocation changes to reduce cloud costs                    | Medium      | Medium          | Future Consideration |
 
 ### 4.2 Primary Use Case: Real-time Anomaly Detection & Insights
 
@@ -113,6 +127,7 @@ For this POC, we've selected **Real-time Anomaly Detection & Insights** as our p
 4. **Educational Value**: Provides a clear demonstration of AI capabilities in a familiar context
 
 The selected use case will:
+
 - Unify logs from Java microservices, AWS Lambda, and Cloudflare
 - Apply machine learning to detect anomalies in real-time
 - Generate contextual alerts with suggested mitigation steps
@@ -125,18 +140,26 @@ The selected use case will:
 ## 5) Implementation & Integration Plan
 
 ### 5.1 MCP Adapter
-- **Purpose**: Aggregate logs from Java microservices, AWS Lambda, and Cloudflare.
-- **Tech Stack**: Node.js/TypeScript.
-- **Outputs**: Uniform JSON stream for the AI/analytics layer.
-- **Learning Component**: Understanding data normalization and integration principles.
+
+- **Purpose**: Secure aggregation of logs from Java microservices, AWS Lambda, and Cloudflare
+- **Tech Stack**: Node.js/TypeScript with OAuth2 authentication
+- **Security Features**:
+  - Integration with enterprise IAM
+  - Secure credential management
+  - Audit logging for compliance
+  - TLS encryption for all communications
+- **Outputs**: Uniform JSON stream for the AI/analytics layer
+- **Learning Component**: Understanding secure data integration and enterprise authentication
 
 ### 5.2 AI/Analytics Layer
+
 - **Objective**: Real-time anomaly detection, with potential for auto-scaling suggestions.
 - **Tech Stack**: Python microservice, or integrated Node module using libraries (e.g., TensorFlow.js, scikit-learn).
 - **Progressive Implementation**: Starting with statistical methods before introducing more complex ML models.
 - **Educational Workshops**: Providing your team with understanding of how the models work.
 
 ### 5.3 Visualization Dashboard
+
 - **Goal**: Provide visual representations of system behavior and AI-generated insights.
 - **Tools**: React with visualization libraries like D3.js (with optional 3D views using Three.js).
 - **Complexity Levels**: Multiple views from simple to advanced to accommodate different user preferences.
@@ -144,6 +167,7 @@ The selected use case will:
 ---
 
 ## 6) Testing & Validation Plan
+
 1. **Unit Tests**: Validate MCP adapter, parsing logic, and AI/analytics modules.
 2. **Integration Tests**: Ensure data flows from microservices → adapter → analytics → dashboard.
 3. **Performance/Load Tests**: Assess impact under various volumes of logs.
@@ -152,21 +176,31 @@ The selected use case will:
 
 ---
 
-## 7) Success Metrics & Learning Objectives
+## 7) Success Metrics, Security & Learning Objectives
 
-### 7.1 Business Success Metrics
+### 7.1 Security & Compliance Metrics
+
+- **Authentication**: 100% of access through authenticated channels
+- **Audit Coverage**: Complete logging of all system interactions
+- **Compliance**: Meeting enterprise security standards
+- **Data Protection**: Encrypted storage and transmission
+
+### 7.2 Business Success Metrics
+
 - **Improved Visibility**: Unification of logs from multiple sources into a single view
 - **Faster Resolution**: Reduction in time to detect and resolve issues
 - **Reduced Manual Effort**: Less time spent on documentation maintenance
 - **AI Literacy**: Increased organizational comfort with AI technologies
 
-### 7.2 Technical Learning Objectives
+### 7.3 Technical Learning Objectives
+
 - **AI Fundamentals**: Understanding how ML models can enhance IT operations
 - **Data Integration**: Knowledge of normalizing heterogeneous data sources
 - **Model Tuning**: Experience in adjusting and improving AI model performance
 - **Feedback Loops**: Creating mechanisms for humans to improve AI systems over time
 
-### 7.3 Long-term Value Assessment
+### 7.4 Long-term Value Assessment
+
 - **ROI & Productivity**: Evaluate time saved vs. investment in AI
 - **Scalability**: Assess performance as system size and complexity grows
 - **Team Capability**: Measure growth in AI competency within your organization
