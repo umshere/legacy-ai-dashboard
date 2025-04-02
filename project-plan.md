@@ -163,6 +163,7 @@ The selected use case will:
 - **Goal**: Provide visual representations of system behavior and AI-generated insights.
 - **Tools**: React with visualization libraries like D3.js (with optional 3D views using Three.js).
 - **Complexity Levels**: Multiple views from simple to advanced to accommodate different user preferences.
+- **User Interaction Flow**: For detailed information about how end users will interact with the dashboard, including authentication, real-time overview, alerts, and runbook execution, see [technical-implementation.md](./technical-implementation.md#55-end-user-interaction-flow).
 
 ---
 

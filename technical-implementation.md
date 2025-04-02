@@ -347,6 +347,76 @@ The dashboard will visualize the system using:
 - D3.js for data-driven visualizations
 - WebSockets for real-time updates
 
+### 5.5 End User Interaction Flow
+
+End users, such as DevOps engineers or system administrators, will primarily interact with the system via a user-friendly web dashboard. Here's how that interaction will typically look:
+
+#### Login & Authentication
+
+- Users log into the dashboard using enterprise Single Sign-On (SSO)
+- Ensures secure access and compliance with enterprise security standards
+
+#### Real-time Overview
+
+- Upon login, users see a 3D interactive view or optional 2D visualization of their systems
+- Clear display of health and status of microservices, serverless functions, and external integrations
+
+#### AI-Generated Alerts & Anomalies
+
+When the AI layer detects an anomaly (such as abnormal CPU usage in a Java microservice), the dashboard immediately:
+
+- Displays an alert highlighting the affected system in the visualization
+- Provides clear, actionable information including:
+  - Severity (High, Medium, Low)
+  - Affected Component (e.g., "User Service API")
+  - Anomaly Type (e.g., "CPU Spike," "Latency Issue")
+
+#### Contextual Recommendations (AI-Generated Runbooks)
+
+Alongside alerts, the dashboard presents AI-generated suggestions for addressing issues, for example:
+
+```
+Detected unusual CPU spike in User Service API. Recommended actions:
+1. Check recent deployments for resource-impacting code changes
+2. Restart affected pods if needed
+3. Temporarily increase CPU allocation via Kubernetes deployment config
+```
+
+#### Interactive Runbook Execution
+
+- Users can click through suggested remediation steps
+- Direct links to relevant tools (e.g., Kubernetes management console, AWS console) streamline remediation
+
+#### Feedback Loop
+
+- After resolving alerts, users provide feedback through simple interactions (e.g., "Did this solution help? Yes/No")
+- Feedback is automatically sent to the AI layer to improve accuracy and recommendations
+
+#### Automated Documentation & Knowledge Base
+
+- Users can search/browse through automatically updated documentation and runbooks
+- AI auto-generates and maintains documentation for frequently occurring issues
+
+#### Real-world Scenario Example
+
+A typical incident response flow:
+
+1. DevOps engineer receives Slack notification about anomaly in "Payment Service"
+2. Engineer clicks Slack link for secure dashboard access
+3. Dashboard visually highlights problematic service with detailed metrics (e.g., latency up 250%)
+4. Dashboard recommends checking recent deployments for database query impacts
+5. Engineer confirms recent deployment correlation, implements suggested fix
+6. Engineer marks suggestion as "helpful" to refine future AI recommendations
+
+#### User Experience Benefits
+
+- Reduced incident response time through proactive AI issue highlighting
+- Simplified troubleshooting with clear recommendations
+- Continuous improvement via built-in feedback loop
+- Reduced manual documentation maintenance burden
+
+This interaction pattern ensures users quickly gain insights and actionable information from the AI-driven dashboard, improving efficiency and reliability.
+
 ---
 
 ## 6) Next Steps & Learning Path

@@ -75,6 +75,8 @@ The POC implements a multi-layered architecture:
 - Use short-lived, rotating credentials
 - Enable audit logging for access events
 
+For detailed information about how end users authenticate and interact with the system through SSO, including the complete user interaction flow and security measures, refer to the [End User Interaction Flow](./technical-implementation.md#55-end-user-interaction-flow) section in the technical implementation document.
+
 ### 3. Data Protection & Compliance
 
 - Implement data minimization

@@ -76,6 +76,8 @@ The selected use cases will be implemented through an integrated solution that a
 - Provide a unified dashboard for comprehensive visibility
 - Automatically generate and maintain system documentation
 
+For detailed information about how end users will interact with the system, including the authentication process, real-time visualization, AI-generated alerts, and runbook execution, see [technical-implementation.md#55-end-user-interaction-flow](./technical-implementation.md#55-end-user-interaction-flow).
+
 ### Visual Solution Overview
 
 ```mermaid
